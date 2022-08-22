@@ -6,7 +6,7 @@ php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'p
 #MySQL Settings
 mysql_root_password: "d_VkHfXAB3"
 mysql_db: "thegioisi"
-mysql_user: "thegiosi_user"
+mysql_user: "root"
 mysql_password: "d_VkHfXAB3"
 
 

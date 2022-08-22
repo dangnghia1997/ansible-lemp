@@ -1,0 +1,59 @@
+#########################################################
+# DO Community Playbooks: Wordpress on Ubuntu 18.04 LAMP
+#########################################################
+---
+- hosts: production
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+    - name: Ansible date fact example
+      debug:
+        var=ansible_date_time.epoch
+
+    - name: Checkout lastest code version
+      ansible.builtin.git:
+        repo: git@github.com:dangnghia1997/thegioisi-be.git
+        dest: /release/thegioisi_{{ansible_date_time.epoch}}
+        single_branch: yes
+        version: develop
+
+    - name: Create symbolic link 
+      file:
+        src: "/release/thegioisi_{{ansible_date_time.epoch}}"
+        dest: /var/www/current
+        state: link
+
+    - name: Set ownership
+      file:
+        path: "/var/www"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Set permissions for directories
+      shell: "/usr/bin/find /var/www/current/wordpress/ -type d -exec chmod 750 {} \\;"
+      tags: [ wordpress ]
+
+    - name: Set permissions for files
+      shell: "/usr/bin/find /var/www/current/wordpress/ -type f -exec chmod 640 {} \\;"
+      tags: [ wordpress ]
+
+    - name: Set up wp-config
+      template:
+        src: "files/wp-config.php.j2"
+        dest: "/var/www/current/wordpress/wp-config.php"
+      notify: Reload Nginx
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

@@ -82,6 +82,31 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', false );
 
+/**
+ * Disable auto update CORE
+ */
+define( 'WP_AUTO_UPDATE_CORE', false );
+
+/**
+ * Enable Graphql Debugger
+ */
+define( 'GRAPHQL_DEBUG', true );
+
+/**
+ *  GRAPHQL_JWT_AUTH_SECRET_KEY
+ */
+define( 'GRAPHQL_JWT_AUTH_SECRET_KEY', 'dtQCoQ?4/3|@3E}OoQk&}M~-M}Mdy4!3]>}=huQ5CoJ1-R|AYSDY44mgXj9l=-8X' );
+
+
+/* Add any custom values between this line and the "stop editing" line. */
+
+// If we're behind a proxy server and using HTTPS, we need to alert WordPress of that fact
+// see also https://wordpress.org/support/article/administration-over-ssl/#using-a-reverse-proxy
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+	$_SERVER['HTTPS'] = 'on';
+}
+
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
