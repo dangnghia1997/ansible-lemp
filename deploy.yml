@@ -19,20 +19,22 @@
         single_branch: yes
         version: develop
 
+    - name: remove the uploads folder
+      file: 
+        path: "/release/thegioisi_{{ansible_date_time.epoch}}/wordpress/wp-content/uploads"
+        state: "absent" 
+
+    - name: Create symbolic link uploads folder
+      file: 
+        src: "/shared/uploads"
+        dest: "/release/thegioisi_{{ansible_date_time.epoch}}/wordpress/wp-content/uploads"
+        state: "link"
+
     - name: Create symbolic link 
       file:
         src: "/release/thegioisi_{{ansible_date_time.epoch}}"
         dest: /var/www/current
         state: link
-
-    - name: remove the uploads folder
-      file: path=/var/www/current/wordpress/wp-content/uploads state=absent 
-
-    - name: setup nginx sites-available symlink
-      file: path=/shared/uploads
-            src=/var/www/current/wordpress/wp-content/uploads
-            state=link 
-            force=yes
 
     - name: Set ownership
       file:
