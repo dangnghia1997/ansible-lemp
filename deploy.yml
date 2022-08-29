@@ -25,6 +25,15 @@
         dest: /var/www/current
         state: link
 
+    - name: remove the uploads folder
+      file: path=/var/www/current/wordpress/wp-content/uploads state=absent 
+
+    - name: setup nginx sites-available symlink
+      file: path=/shared/uploads
+            src=/var/www/current/wordpress/wp-content/uploads
+            state=link 
+            force=yes
+
     - name: Set ownership
       file:
         path: "/var/www"
